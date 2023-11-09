@@ -1,0 +1,17 @@
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-nav li {
+    display: inline-block;
+}
+
+.main-nav a {
+    text-decoration: none;
+}
+
+.main-nav a:hover {
+    text-decoration: underline;
+}
