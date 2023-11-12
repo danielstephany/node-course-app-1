@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const path = require("path")
 const rootDir = require("./utils/path")
+const {engine} = require('express-handlebars')
 
 const {adminRoutes, products} = require("./routes/admin")
 const shopRoutes = require("./routes/shop")
@@ -9,7 +10,8 @@ const shopRoutes = require("./routes/shop")
 const port = 3000
 const app = express();
 
-app.set('view engine', 'pug')
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
 app.set("views", path.join(rootDir,"views"))
 
 app.use(express.static(path.join(rootDir, "public")))
