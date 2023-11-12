@@ -1,40 +1,22 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        meta(http-equiv="X-UA-Compatible" content="ie=edge")
-        title Shop
-        link(rel="preconnect" href="https://fonts.googleapis.com")
-        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
-        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap"
-            rel="stylesheet")
-        link(rel="stylesheet" href="/styles/index.css")
-    body 
-        header
-            nav.main-nav
-                ul
-                    li
-                        a(href="/") Shop
-                    li
-                        a(href="/admin/add-product") Add Product
-        main.main-content
-            h1 My Products
+extends layouts/main-layout.pug
 
-        if prods.length
-            div.product-grid
-                each product in prods 
-                    div.product-grid__item
-                        article.product-card 
-                            header.product-card__header
-                                h3 #{product.title}
-                            div.product-card__img
-                                img(src="https://www.cityofboise.org/media/14754/shutterstock_523462210.jpg" alt="product img")
-                            div.product-card__content
-                                span.product-card__price $19.99
-                                p.product-card__desc A description for the product.
-                            div.product-card__actions
-                                button.main-btn Add to cart
-        else 
-            h3 No products available
-                        
+block content
+    h1 My Products
+
+    if prods.length
+        div.product-grid
+            each product in prods 
+                div.product-grid__item
+                    article.product-card 
+                        header.product-card__header
+                            h3 #{product.title}
+                        div.product-card__img
+                            img(src="https://www.cityofboise.org/media/14754/shutterstock_523462210.jpg" alt="product img")
+                        div.product-card__content
+                            span.product-card__price $19.99
+                            p.product-card__desc A description for the product.
+                        div.product-card__actions
+                            button.main-btn Add to cart
+    else
+        h3 No products available
+                
