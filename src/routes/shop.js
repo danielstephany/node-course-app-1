@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get("/", (req, res, next) => {
     console.log("shop.js", products)
-    res.render("shop", {prods: products, title: "Shop", path: "/"})
+    res.render("shop", {prods: products, title: "Shop", path: "/", isShop: true})
 })
 
 module.exports = router
