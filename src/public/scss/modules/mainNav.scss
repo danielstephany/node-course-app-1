@@ -1,0 +1,30 @@
+.main-nav {
+    display: flex;
+    background-color: rgb(65, 135, 255);
+    padding: 0 16px;
+}
+
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-nav li {
+    display: inline-block;
+}
+
+.main-nav a {
+    display: inline-block;
+    padding: 8px 8px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.main-nav a.active {
+    text-decoration: underline;
+}
+
+.main-nav a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,17 @@
+.form-ctrl {
+    display: inline-block;
+    min-width: 250px;
+    margin: 0 0 16px;
+    &.form-ctrl--fullwidth {
+        width: 100%;
+    }
+    label {
+        display: block;
+        margin: 0 0 4px 0;
+    }
+    textarea,
+    input {
+        width: 100%;
+        padding: 4px 8px;
+    }
+}

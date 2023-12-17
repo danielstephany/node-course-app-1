@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs'); %>
+    <h1>Admin Products</h1>
+
+    <% if (prods && prods.length) {%>
+        <div class="product-grid">
+            <% prods.forEach(product=> { %>
+                <div class="product-grid__item">
+                    <article class="product-card ">
+                        <header class="product-card__header">
+                            <h3>
+                                <%= product.title %>
+                            </h3>
+                        </header>
+                        <div class="product-card__img">
+                            <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
+                        </div>
+                        <div class="product-card__content">
+                            <span class="product-card__price">$<%= product.price %></span>
+                            <p class="product-card__desc"><%= product.description %></p>
+                        </div>
+                        <div class="product-card__actions">
+                            <a href="/admin/edit-product/<%= product.id %>" class="main-btn ">Edit</a>
+                            <form class="form-btn" action="/admin/delete-product" method="post">
+                                <input type="hidden" name="productId" value="<%= product.id %>">
+                                <button type="submit" class="main-btn ">Delete</button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+                <% }) %>
+        </div>
+        <% } else { %>
+            <h3>No products available</h3>
+            <% } %>
+<%- include('../includes/end.ejs'); %>

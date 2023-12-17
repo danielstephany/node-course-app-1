@@ -1,0 +1,20 @@
+.main-btn {
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 4px;
+    outline: none;
+    padding: 4px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    text-decoration: none;
+    color: #000;
+}
+
+.main-btn:hover {
+    background-color: #eee;
+}
+
+.form-btn {
+    display: inline-block;
+}

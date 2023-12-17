@@ -1,0 +1,30 @@
+<%- include('../includes/head.ejs'); %>
+    <div class="txt-center">
+        <h1>Products details</h1>
+
+        <% if (product) {%>
+            <article class="details-card ">
+                <div class="details-card__left">
+                    <div class="details-card__img">
+                        <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
+                    </div>
+                </div>
+                <div class="details-card__right">
+                    <header class="details-card__header">
+                        <h3><%= product.title %></h3>
+                        <p><%= product.description %></p>
+                    </header>
+                    <div class="details-card__price">$<%= product.price %></div>
+                    <div class="details-card__actions">
+                        <form class="form-btn" action="/cart" method="post">
+                            <input type="hidden" name="productId" value="<%= product.id %>" />
+                            <button type="submit" class="main-btn ">Add to cart</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        <% } else { %>
+            <h3>No products available</h3>
+        <% } %>
+    </div>
+<%- include('../includes/end.ejs'); %>
