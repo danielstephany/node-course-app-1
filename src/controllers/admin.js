@@ -5,22 +5,30 @@ const getAddProduct = (req, res, next) => {
 }
 
 const postAddProduct = async (req, res, next) => {
-
-    const product = new Product(
-        req.body.title,
-        req.body.imageUrl,
-        req.body.description,
-        req.body.price,
-        )
-    await product.save()
-
-    res.redirect("/")
+    try {
+        const product = new Product(
+            req.body.title,
+            req.body.imgUrl,
+            req.body.description,
+            req.body.price,
+            )
+        await product.save()
+    
+        res.redirect("/")
+    } catch(e){
+        console.log(e)
+    }
 }
 
 const getEditProduct = async (req, res, next) => {
-    const productId = req.params.productId
-    const product = await Product.findById(productId)
-    res.render("admin/edit-product", {title: "Edit Product", path: "/admin/edit-product", product})
+    try {
+        const productId = req.params.productId
+        const [products, fieldData] = await Product.findById(productId)
+        
+        res.render("admin/edit-product", { title: "Edit Product", path: "/admin/edit-product", product: products[0] || null})
+    } catch (e){
+        console.log(e)
+    }
 }
 
 const deleteProduct = async (req, res, next) => {
@@ -32,7 +40,7 @@ const deleteProduct = async (req, res, next) => {
 const editProduct = async (req, res, next) => {
     const product = new Product(
         req.body.title,
-        req.body.imageUrl,
+        req.body.imgUrl,
         req.body.description,
         req.body.price,
         req.body.id
@@ -42,8 +50,12 @@ const editProduct = async (req, res, next) => {
 }
 
 const getProducts = async (req, res, next) => {
-    const products = await Product.fetchAll()
-    res.render("admin/products", { prods: products, title: "Shop", path: "/admin/products"})
+    try {
+        const [products, fieldData] = await Product.fetchAll()
+        res.render("admin/products", { prods: products, title: "Shop", path: "/admin/products"})
+    } catch(e){
+        console.log(e)
+    }
 }
 
 module.exports = {
