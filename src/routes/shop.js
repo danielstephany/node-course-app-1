@@ -4,10 +4,10 @@ const {
     getIndex,
     getCart,
     postCart,
-    getCheckout,
     getOrders,
     getProduct,
-    cartDeleteItem
+    cartDeleteItem,
+    createOrder
  } = require("../controllers/shop")
 
 const router = express.Router()
@@ -24,7 +24,7 @@ router.post("/cart-delete-item", cartDeleteItem)
 
 router.post("/cart", postCart)
 
-router.get("/checkout", getCheckout)
+router.post("/create-order", createOrder)
 
 router.get("/orders", getOrders)
 
