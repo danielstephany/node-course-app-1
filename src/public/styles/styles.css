@@ -388,6 +388,7 @@ body {
 
 .main-nav {
   display: flex;
+  justify-content: space-between;
   background-color: rgb(65, 135, 255);
   padding: 0 16px;
 }

@@ -6,15 +6,15 @@ const getAddProduct = (req, res, next) => {
 
 const postAddProduct = async (req, res, next) => {
     try {
-        //the createProduct method gets created when the user is assoiated with the product 
-        //using the belongsTo or HasMany methods
-        //this method will automaticly provide the user id to the new product
-        await req.user.createProduct({
-            title: req.body.title,
-            imgUrl: req.body.imgUrl,
-            description: req.body.description,
-            price: req.body.price
-        })
+        const product = new Product(
+            req.body.title,
+            req.body.price,
+            req.body.description,
+            req.body.imgUrl,
+            req.user._id
+        )
+
+        await product.save()
     
         res.redirect("/")
     } catch(e){
@@ -25,8 +25,7 @@ const postAddProduct = async (req, res, next) => {
 const getEditProduct = async (req, res, next) => {
     try {
         const productId = req.params.productId
-        const [product] = await req.user.getProducts({where: {id: productId}})
-        console.log(product)
+        const product = await Product.fetchById(productId)
         
         res.render("admin/edit-product", { title: "Edit Product", path: "/admin/edit-product", product})
     } catch (e){
@@ -37,11 +36,7 @@ const getEditProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     const productId = req.body.productId
     try {
-        await Product.destroy({
-            where: {
-                id: productId
-            }
-        })
+        await Product.deleteById(productId)
         res.redirect("/admin/products")
     } catch(e){
         console.log(e)
@@ -50,15 +45,11 @@ const deleteProduct = async (req, res, next) => {
 
 const editProduct = async (req, res, next) => {
     try {
-        await Product.update({
+        await Product.updateOne(req.body._id, {
             title: req.body.title,
             imgUrl: req.body.imgUrl,
             description: req.body.description,
             price: req.body.price
-        }, {
-            where: {
-                id: req.body.id
-            }
         });
         res.redirect("/admin/products")
     } catch(e){
@@ -68,7 +59,7 @@ const editProduct = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
     try {
-        const products = await req.user.getProducts()
+        const products = await Product.fetchAll()
         res.render("admin/products", { prods: products, title: "Shop", path: "/admin/products"})
     } catch(e){
         console.log(e)

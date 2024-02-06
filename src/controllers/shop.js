@@ -1,8 +1,9 @@
 const Product = require("../Models/product")
+const User = require("../Models/user")
 
 const getShopProducts = async (req, res, next) => {
     try {
-        const products = await Product.findAll()
+        const products = await Product.fetchAll()
         res.render("shop/product-list", { prods: products, title: "Shop Products", path: "/products" })
     } catch (e) {
         console.log(e)
@@ -11,7 +12,9 @@ const getShopProducts = async (req, res, next) => {
 
 const getProduct = async (req, res, next) => {
     try {
-        const product = await Product.findByPk(productId)
+        let productId = req.params.productId
+        const product = await Product.fetchById(productId)
+        console.log(product)
         res.render("shop/product-details", { product, title: "Product Details", path: "/products" })
     } catch(e){
         console.log(e)
@@ -20,7 +23,7 @@ const getProduct = async (req, res, next) => {
 
 const getIndex = async (req, res, next) => {
     try {
-        const products = await Product.findAll()
+        const products = await Product.fetchAll()
         res.render("shop/index", { prods: products, title: "Shop", path: "/" })
     } catch(e) {
         console.log(e)
@@ -29,10 +32,9 @@ const getIndex = async (req, res, next) => {
 
 const getCart = async (req, res, next) => {
     try {
-        const cart = await req.user.getCart()
-        const products = await cart.getProducts()
+        const cartItems = await req.user.getCart()
 
-        res.render("shop/cart", { title: "Cart", path: "/cart", cart: {products} })
+        res.render("shop/cart", { title: "Cart", path: "/cart", cart: { products: cartItems } })
     } catch (e) {
         console.log(e)
     }
@@ -41,9 +43,8 @@ const getCart = async (req, res, next) => {
 const cartDeleteItem = async (req, res, next) => {
     try {
         const productId = req.body.productId
-        const cart = await req.user.getCart()
-        const products = await cart.getProducts({where: {id: productId}})
-        cart.removeProduct(products[0])
+        const user = await req.user.deleteCartItem(productId)
+        req.user = new User(req.user.name, req.user.email, req.user.cart, req.user._id)
         res.redirect("/cart")
     } catch (e) {
         console.log(e)
@@ -54,25 +55,11 @@ const postCart = async (req, res, next) => {
     const productId = req.body.productId
     
     try {
-        const cart = await req.user.getCart()
-        const products = await cart.getProducts({where: {id: productId}})
-        let cartProduct;
+        const product = await Product.fetchById(productId)
+        const user = await req.user.addToCart(product)
+        req.user = new User(req.user.name, req.user.email, req.user.cart, req.user._id)
 
-        if(products.length){
-            cartProduct = products[0]
-        }
-
-        let newQuantity = 1; 
-
-        if (cartProduct){
-            newQuantity = cartProduct.cartItem.quantity + 1
-            await cart.addProduct(cartProduct, { through: { quantity: newQuantity } })
-        } else {
-            const product = await Product.findByPk(productId)
-            await cart.addProduct(product, { through: { quantity: newQuantity}})
-        }
-
-        res.redirect("/")
+        res.redirect("/cart")
     } catch(e) {
         console.log(e)
     }
@@ -80,8 +67,7 @@ const postCart = async (req, res, next) => {
 
 const getOrders = async (req, res, next) => {
     try {
-        const orders = await req.user.getOrders({include: ["products"]})
-        console.log(orders)
+        const orders = await req.user.getOrders()
 
         res.render("shop/orders", { title: "Orders", path: "/orders", orders })
 
@@ -92,14 +78,7 @@ const getOrders = async (req, res, next) => {
 
 const createOrder = async (req, res, next) => {
     try {
-        const cart = await req.user.getCart()
-        const products = await cart.getProducts()
-        const order = await req.user.createOrder()
-        order.addProducts(products.map(product => {
-            product.orderItem = {quantity: product.cartItem.quantity}
-            return product
-        }))
-        await cart.setProducts(null)
+        await req.user.addOrder()
 
         res.redirect("/orders")
     } catch(e){

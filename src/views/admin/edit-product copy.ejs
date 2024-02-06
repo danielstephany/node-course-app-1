@@ -3,7 +3,7 @@
         <h1>Add product</h1>
         <div class="add-product__form-card">
             <form action="/admin/edit-product" method="post">
-                <input type="hidden" name="id" value="<%= product.id || "" %>">
+                <input type="hidden" name="id" value="<%= product._id || "" %>">
                 <div class="form-ctrl form-ctrl--fullwidth">
                     <Label for="title">Title</Label>
                     <input id="title" name="title" value="<%=product.title || "" %>" />

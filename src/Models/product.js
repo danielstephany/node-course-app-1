@@ -1,26 +1,74 @@
-const Sequelize = require("sequelize")
-const sequelize = require("../utils/database")
+const { getDb } = require("../utils/database")
+const {ObjectId} = require('mongodb')
 
-const Product = sequelize.define("product", {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    title: Sequelize.STRING,
-    price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false
-    },
-    imgUrl: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    description: {
-        type: Sequelize.STRING,
-        allowNull: false
+
+class Product {
+    constructor(title, price, description, imgUrl, userId){
+        this.title = title
+        this.price = price
+        this.description = description,
+        this.imgUrl = imgUrl
+        this.userId = userId
     }
-});
+
+    async save(){
+        const db = getDb()
+        try {
+            await db.collection('products').insertOne(this)
+        } catch (e) {
+            console.log(e)
+        }
+        return null
+    }
+
+    static async fetchAll(){
+        const db = getDb()
+        try {
+            const products = db.collection("products").find().toArray();
+            return products
+        } catch(e){
+            console.log(e)
+        }
+        return null
+    }
+
+    static async fetchById(id){
+        const db = getDb()
+        try {
+            const product = db.collection("products").findOne({ _id: new ObjectId(id) });
+            return product
+        } catch(e){
+            console.log(e)
+        }
+        return null
+    }
+
+    static async updateOne(id, data){
+        const db = getDb()
+        try {
+            const product = db.collection("products").updateOne(
+                { _id: new ObjectId(id) },
+                { $set: data }
+            );
+            return product
+        } catch(e){
+            console.log(e)
+        }
+        return null
+    }
+
+    static async deleteById(id){
+        const db = getDb()
+        try {
+            const product = db.collection("products").deleteOne(
+                { _id: new ObjectId(id) }
+            );
+            return product
+        } catch(e){
+            console.log(e)
+        }
+        return null
+    }
+}
 
 module.exports = Product
