@@ -1,77 +1,103 @@
-const fs = require("fs")
-const path = require("path")
-const rootDir = require("../utils/path")
-const Cart = require("./cart")
-const filePath = path.join(rootDir, "data", "products.json")
+const mongoose = require("mongoose")
 
-const getProductsFromFile = async () => {
-    try {
-        let json
-        const fileString = await fs.promises.readFile(filePath, { encoding: 'utf8' })
-        if (fileString) json = JSON.parse(fileString)
+const productSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    imgUrl: {
+        type: String,
+        required: true
+    },
+    // userId: {
+    //     type: mongoose.ObjectId,
+    //     required: true
+    // }
 
-        return json
-    } catch (e) {
-        return []
-    }
-}
+})
 
-module.exports = class product {
-    constructor(title, imageUrl, description, price, id = String(Date.now())){
-        this.title = title
-        this.imageUrl = imageUrl
-        this.description = description
-        this.price = parseInt(price, 10)
-        this.id = id
-    }
+const Product = mongoose.model("Product", productSchema)
 
-    async save() {
-        const products = await getProductsFromFile()
 
-        try {
-            products.push(this)
-            await fs.promises.writeFile(filePath, JSON.stringify(products));
-        } catch(e){
-            console.log(e)
-        }
-        return null
-    }
+// const { getDb } = require("../utils/database")
+// const {ObjectId} = require('mongodb')
 
-    async update() {
-        let updatedProducts
-        const products = await getProductsFromFile()
-        const index = products.findIndex(prod => prod.id === this.id)
-        try {
-            updatedProducts = [...products]
-            updatedProducts[index] = this
-            await fs.promises.writeFile(filePath, JSON.stringify(updatedProducts));
-        } catch(e){
-            console.log(e)
-        }
-        return null
-    }
 
-    static async deleteById(id){
-        const products = await getProductsFromFile()
-        const product = products?.filter(prod => prod.id === id)[0]
-        const updatedProducts = products?.filter(prod => prod.id !== id)
-        try {
-            await fs.promises.writeFile(filePath, JSON.stringify(updatedProducts));
-            await Cart.deleteById(id, product.price)
-        } catch(e){
-            console.log(e)
-        }
-        return null
-    }
+// class Product {
+//     constructor(title, price, description, imgUrl, userId){
+//         this.title = title
+//         this.price = price
+//         this.description = description,
+//         this.imgUrl = imgUrl
+//         this.userId = userId
+//     }
 
-    static async fetchAll() {
-        const products = await getProductsFromFile()
-        return products
-    }
+//     async save(){
+//         const db = getDb()
+//         try {
+//             await db.collection('products').insertOne(this)
+//         } catch (e) {
+//             console.log(e)
+//         }
+//         return null
+//     }
 
-    static async findById(id) {
-        const products = await getProductsFromFile()
-        const product = products.filter(prod => prod.id === id)[0]
-        return product
-    }
-}
+//     static async fetchAll(){
+//         const db = getDb()
+//         try {
+//             const products = db.collection("products").find().toArray();
+//             return products
+//         } catch(e){
+//             console.log(e)
+//         }
+//         return null
+//     }
+
+//     static async fetchById(id){
+//         const db = getDb()
+//         try {
+//             const product = db.collection("products").findOne({ _id: new ObjectId(id) });
+//             return product
+//         } catch(e){
+//             console.log(e)
+//         }
+//         return null
+//     }
+
+//     static async updateOne(id, data){
+//         const db = getDb()
+//         try {
+//             const product = db.collection("products").updateOne(
+//                 { _id: new ObjectId(id) },
+//                 { $set: data }
+//             );
+//             return product
+//         } catch(e){
+//             console.log(e)
+//         }
+//         return null
+//     }
+
+//     static async deleteById(id){
+//         const db = getDb()
+//         try {
+//             const product = db.collection("products").deleteOne(
+//                 { _id: new ObjectId(id) }
+//             );
+//             return product
+//         } catch(e){
+//             console.log(e)
+//         }
+//         return null
+//     }
+// }
+
+module.exports = Product

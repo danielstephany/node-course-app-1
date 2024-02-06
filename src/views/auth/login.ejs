@@ -1,0 +1,16 @@
+<%- include('../includes/head.ejs'); %>
+<div class="add-product">
+    <h1>Login</h1>
+    <div class="add-product__form-card">
+        <form action="/auth/login" method="post">
+            <div class="form-ctrl form-ctrl--fullwidth">
+                <Label for="email">Email</Label>
+                <input id="email" name="email" />
+            </div>
+            <div class="form-ctrl form-ctrl--fullwidth">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+<%- include('../includes/end.ejs'); %>

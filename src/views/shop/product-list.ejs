@@ -12,7 +12,7 @@
                         </h3>
                     </header>
                     <div class="product-card__img">
-                        <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
+                        <img src="<%= product.imgUrl %>" alt="<%= product.title %>" />
                     </div>
                     <div class="product-card__content">
                         <span class="product-card__price">$<%= product.price %></span>
@@ -21,9 +21,9 @@
                         </p>
                     </div>
                     <div class="product-card__actions">
-                        <a href="/products/<%= product.id %>" class="main-btn">Details</a>
+                        <a href="/products/<%= product._id %>" class="main-btn">Details</a>
                         <form class="form-btn" action="/cart" method="post">
-                            <input type="hidden" name="productId" value="<%= product.id %>" />
+                            <input type="hidden" name="productId" value="<%= product._id %>" />
                             <button type="submit" class="main-btn ">Add to cart</button>
                         </form>
                     </div>

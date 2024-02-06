@@ -1,7 +1,7 @@
 [
     {
         "title": "Cheese",
-        "imageUrl": "https://www.health.com/thmb/LBO6qHxW8gBCtl35liCt4uWx0lw=/2000x0/filters:no_upscale():max_bytes(150000):strip_icc()/Is-Cream-Cheese-Healthy-GettyImages-177721417-2000-d6a2a5d4703145b894aacff4ee6cab87.jpg",
+        "imgUrl": "https://www.health.com/thmb/LBO6qHxW8gBCtl35liCt4uWx0lw=/2000x0/filters:no_upscale():max_bytes(150000):strip_icc()/Is-Cream-Cheese-Healthy-GettyImages-177721417-2000-d6a2a5d4703145b894aacff4ee6cab87.jpg",
         "description": "Creamy cheese for your platter of delight.",
         "price": 7.00,
         "id": "1702152437222"
@@ -9,13 +9,13 @@
     {
         "id": "1",
         "title": "Book",
-        "imageUrl": "https://www.cityofboise.org/media/14754/shutterstock_523462210.jpg",
+        "imgUrl": "https://www.cityofboise.org/media/14754/shutterstock_523462210.jpg",
         "description": "A default book for your library",
         "price": 5.99
     },
     {
         "title": "Puppy",
-        "imageUrl": "https://www.shutterstock.com/image-photo/cute-puppy-pembroke-welsh-corgi-260nw-1290320698.jpg",
+        "imgUrl": "https://www.shutterstock.com/image-photo/cute-puppy-pembroke-welsh-corgi-260nw-1290320698.jpg",
         "description": "A cute and cuddly puppy for all of your anxiety needs",
         "price": 399.00,
         "id": "2"
@@ -23,20 +23,20 @@
     {
         "id": "3",
         "title": "Boat",
-        "imageUrl": "https://i.insider.com/5d3a0c24454a3908467e0f37?width=1000&format=jpeg&auto=webp",
+        "imgUrl": "https://i.insider.com/5d3a0c24454a3908467e0f37?width=1000&format=jpeg&auto=webp",
         "description": "Some thing to keep your wallet busy.",
         "price": 40000
     },
     {
         "title": "Car",
-        "imageUrl": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcnN8ZW58MHx8MHx8fDA%3D",
+        "imgUrl": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhcnN8ZW58MHx8MHx8fDA%3D",
         "description": "A zippy wip for your next trip.",
         "price": 44000.98,
         "id": "1701541463930"
     },
     {
         "title": "Doritos",
-        "imageUrl": "https://i5.walmartimages.com/seo/Doritos-Nacho-Cheese-Tortilla-Chips-9-75-Oz_af780c28-d0c0-4fe3-aaa1-61c104098b11.38a97b15d730e88e9c2f3e75ff50a017.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",
+        "imgUrl": "https://i5.walmartimages.com/seo/Doritos-Nacho-Cheese-Tortilla-Chips-9-75-Oz_af780c28-d0c0-4fe3-aaa1-61c104098b11.38a97b15d730e88e9c2f3e75ff50a017.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",
         "description": "Yummy tummy busters",
         "price": 4.00,
         "id": "1702081868240"
