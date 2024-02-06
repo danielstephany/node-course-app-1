@@ -22,4 +22,4 @@ router.get("/products", getProducts)
 
 router.post("/product", postAddProduct)
 
-module.exports = router
+module.exports.adminRoutes = router
