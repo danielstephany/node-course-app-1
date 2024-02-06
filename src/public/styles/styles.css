@@ -388,7 +388,6 @@ body {
 
 .main-nav {
   display: flex;
-  justify-content: space-between;
   background-color: rgb(65, 135, 255);
   padding: 0 16px;
 }
@@ -658,11 +657,6 @@ body {
 .cart-card__total {
   width: 100%;
   margin-bottom: 0;
-  text-align: right;
-}
-.cart-card__action {
-  width: 100%;
-  padding: 24px 0 0;
   text-align: right;
 }
 

@@ -12,16 +12,16 @@
                             </h3>
                         </header>
                         <div class="product-card__img">
-                            <img src="<%= product.imgUrl %>" alt="<%= product.title %>" />
+                            <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
                         </div>
                         <div class="product-card__content">
                             <span class="product-card__price">$<%= product.price %></span>
                             <p class="product-card__desc"><%= product.description %></p>
                         </div>
                         <div class="product-card__actions">
-                            <a href="/admin/edit-product/<%= product._id %>" class="main-btn ">Edit</a>
+                            <a href="/admin/edit-product/<%= product.id %>" class="main-btn ">Edit</a>
                             <form class="form-btn" action="/admin/delete-product" method="post">
-                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <input type="hidden" name="productId" value="<%= product.id %>">
                                 <button type="submit" class="main-btn ">Delete</button>
                             </form>
                         </div>
