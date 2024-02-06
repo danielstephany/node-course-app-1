@@ -3,7 +3,7 @@ const User = require("../Models/user")
 
 const getShopProducts = async (req, res, next) => {
     try {
-        const products = await Product.fetchAll()
+        const products = await Product.find()
         res.render("shop/product-list", { prods: products, title: "Shop Products", path: "/products" })
     } catch (e) {
         console.log(e)
@@ -13,7 +13,7 @@ const getShopProducts = async (req, res, next) => {
 const getProduct = async (req, res, next) => {
     try {
         let productId = req.params.productId
-        const product = await Product.fetchById(productId)
+        const product = await Product.findById(productId)
         console.log(product)
         res.render("shop/product-details", { product, title: "Product Details", path: "/products" })
     } catch(e){
@@ -23,7 +23,7 @@ const getProduct = async (req, res, next) => {
 
 const getIndex = async (req, res, next) => {
     try {
-        const products = await Product.fetchAll()
+        const products = await Product.find()
         res.render("shop/index", { prods: products, title: "Shop", path: "/" })
     } catch(e) {
         console.log(e)

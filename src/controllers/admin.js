@@ -6,13 +6,13 @@ const getAddProduct = (req, res, next) => {
 
 const postAddProduct = async (req, res, next) => {
     try {
-        const product = new Product(
-            req.body.title,
-            req.body.price,
-            req.body.description,
-            req.body.imgUrl,
-            req.user._id
-        )
+        const product = new Product({
+            title: req.body.title,
+            price: req.body.price,
+            description: req.body.description,
+            imgUrl: req.body.imgUrl,
+            // _id: req.user._id
+        })
 
         await product.save()
     
@@ -25,7 +25,7 @@ const postAddProduct = async (req, res, next) => {
 const getEditProduct = async (req, res, next) => {
     try {
         const productId = req.params.productId
-        const product = await Product.fetchById(productId)
+        const product = await Product.findById(productId)
         
         res.render("admin/edit-product", { title: "Edit Product", path: "/admin/edit-product", product})
     } catch (e){
@@ -36,7 +36,7 @@ const getEditProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     const productId = req.body.productId
     try {
-        await Product.deleteById(productId)
+        await Product.deleteOne({_id: productId})
         res.redirect("/admin/products")
     } catch(e){
         console.log(e)
@@ -45,7 +45,7 @@ const deleteProduct = async (req, res, next) => {
 
 const editProduct = async (req, res, next) => {
     try {
-        await Product.updateOne(req.body._id, {
+        await Product.updateOne({_id: req.body._id}, {
             title: req.body.title,
             imgUrl: req.body.imgUrl,
             description: req.body.description,
@@ -59,7 +59,7 @@ const editProduct = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
     try {
-        const products = await Product.fetchAll()
+        const products = await Product.find()
         res.render("admin/products", { prods: products, title: "Shop", path: "/admin/products"})
     } catch(e){
         console.log(e)
