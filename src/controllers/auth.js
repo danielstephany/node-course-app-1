@@ -10,7 +10,11 @@ const getLogin = (req, res, next) => {
 
 const createAccount = async (req, res, next) => {
     try {
-        const user = new User(req.body.name, req.body.email)
+        const user = new User({
+            name:req.body.name, 
+            email: req.body.email,
+            cart: {items: []}
+        })
         await user.save()
 
         res.redirect("/")

@@ -1,4 +1,4 @@
-const Product = require("../Models/product")
+const {Product} = require("../Models/product")
 
 const getAddProduct = (req, res, next) => {
     res.render("admin/add-product", { title: "Add product", path: "/admin/add-product" })
@@ -11,7 +11,7 @@ const postAddProduct = async (req, res, next) => {
             price: req.body.price,
             description: req.body.description,
             imgUrl: req.body.imgUrl,
-            // _id: req.user._id
+            userId: req.user._id
         })
 
         await product.save()

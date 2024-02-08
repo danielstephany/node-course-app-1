@@ -21,15 +21,15 @@ app.use(express.static(path.join(rootDir, "public")))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// app.use((req, res, next) => {
-//     User.findByEmail("danielstephany85@gmail.com")
-//     .then(user => {
-//         if(user){
-//             req.user = new User(user.name, user.email, user.cart, user._id)
-//         }
-//         next()
-//     }).catch(e => console.log(e))
-// });
+app.use((req, res, next) => {
+    User.findOne({email: "danielstephany85@gmail.com"})
+    .then(user => {
+        if(user){
+            req.user = user
+        }
+        next()
+    }).catch(e => console.log(e))
+});
 
 app.use("/admin", adminRoutes)
 app.use("/auth", authRoutes)

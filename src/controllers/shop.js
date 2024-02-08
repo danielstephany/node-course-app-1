@@ -1,4 +1,4 @@
-const Product = require("../Models/product")
+const {Product} = require("../Models/product")
 const User = require("../Models/user")
 
 const getShopProducts = async (req, res, next) => {
@@ -43,8 +43,8 @@ const getCart = async (req, res, next) => {
 const cartDeleteItem = async (req, res, next) => {
     try {
         const productId = req.body.productId
-        const user = await req.user.deleteCartItem(productId)
-        req.user = new User(req.user.name, req.user.email, req.user.cart, req.user._id)
+        await req.user.deleteCartItem(productId)
+
         res.redirect("/cart")
     } catch (e) {
         console.log(e)
@@ -55,9 +55,8 @@ const postCart = async (req, res, next) => {
     const productId = req.body.productId
     
     try {
-        const product = await Product.fetchById(productId)
-        const user = await req.user.addToCart(product)
-        req.user = new User(req.user.name, req.user.email, req.user.cart, req.user._id)
+        const product = await Product.findById(productId)
+        await req.user.addToCart(product)
 
         res.redirect("/cart")
     } catch(e) {
