@@ -9,6 +9,7 @@
                         <span class="cart-item__title"><%= product.productId.title %>: $<%= product.productId.price %></span>
                         <span>QTY: <%= product.quantity %></span>
                         <form action="/cart-delete-item" method="post">
+                            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                             <input type="hidden" name="productId" value="<%= product.productId._id %>" />
                             <button class="main-btn">Delete</button>
                         </form>
@@ -18,6 +19,7 @@
             <h3 class="cart-card__total">total: <%= cart.totalPrice %></h3>
             <div class="cart-card__action">
                 <form action="/create-order" method="POST">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                     <button type="submit" class="main-btn">Order Now</button>
                 </form>
             </div>

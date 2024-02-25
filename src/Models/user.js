@@ -18,6 +18,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
+    password: {
+        type: String,
+        required: true
+    },
     cart: {
         type: CartSchema,
         required: true
@@ -50,7 +56,6 @@ UserSchema.methods.addToCart = async function (product) {
 UserSchema.methods.getCart = async function(){
     try {
         const userWithPopulatedCart = await this.populate("cart.items.productId")
-        console.log(userWithPopulatedCart.cart.items)
         return userWithPopulatedCart.cart.items
     } catch (e) {
         console.log(e)
@@ -98,7 +103,6 @@ UserSchema.methods.addOrder = async function(){
 UserSchema.methods.getOrders = async function(){
     try {
         const orders = await Order.find({ "user.userId": this._id })
-        console.log(orders)
         return orders
     } catch (e) {
         console.log(e)

@@ -1,6 +1,12 @@
 <%- include('../includes/head.ejs'); %>
     <h1>Admin Products</h1>
 
+    <% if(errorMessage){ %>
+        <div class="txt-error">
+            <%=errorMessage%>
+        </div>
+    <% } %>
+
     <% if (prods && prods.length) {%>
         <div class="product-grid">
             <% prods.forEach(product=> { %>
@@ -21,6 +27,7 @@
                         <div class="product-card__actions">
                             <a href="/admin/edit-product/<%= product._id %>" class="main-btn ">Edit</a>
                             <form class="form-btn" action="/admin/delete-product" method="post">
+                                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                                 <input type="hidden" name="productId" value="<%= product._id %>">
                                 <button type="submit" class="main-btn ">Delete</button>
                             </form>

@@ -365,7 +365,18 @@ body {
   text-align: center;
 }
 
+.txt-error {
+  display: block;
+  color: #c50000;
+  margin-bottom: 0.8em;
+}
+
+.txt-r {
+  text-align: right;
+}
+
 .main-btn {
+  display: inline-flex;
   background-color: #fff;
   border: 1px solid #999;
   border-radius: 4px;
@@ -403,11 +414,18 @@ body {
   display: inline-block;
 }
 
-.main-nav a {
+.main-nav a,
+.main-nav button {
+  border: none;
+  background-color: transparent;
   display: inline-block;
   padding: 8px 8px;
   color: #fff;
   text-decoration: none;
+}
+.main-nav a:hover,
+.main-nav button:hover {
+  text-decoration: underline;
 }
 
 .main-nav a.active {
@@ -493,6 +511,16 @@ body {
 .form-ctrl input {
   width: 100%;
   padding: 4px 8px;
+  border-style: solid;
+}
+.form-ctrl__error {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: red;
+}
+.form-ctrl--error input {
+  border-color: red;
 }
 
 .grid-container {
@@ -588,6 +616,20 @@ body {
   padding: 0 0 16px;
 }
 
+.form-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
 .product-grid {
   display: flex;
   flex-wrap: wrap;
@@ -600,21 +642,8 @@ body {
   padding: 0 16px;
 }
 
-.add-product h1 {
+.simple-section h1 {
   text-align: center;
-}
-.add-product__form-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 32px 16px;
 }
 
 .product-details {

@@ -1,4 +1,6 @@
 const express = require("express")
+const isAuthenticated = require("../middleware/isAuthenticated")
+
 const { 
     getShopProducts,
     getIndex,
@@ -18,14 +20,14 @@ router.get("/products", getShopProducts)
 
 router.get("/products/:productId", getProduct)
 
-router.get("/cart", getCart)
+router.get("/cart", isAuthenticated, getCart)
 
-router.post("/cart-delete-item", cartDeleteItem)
+router.post("/cart-delete-item", isAuthenticated, cartDeleteItem)
 
-router.post("/cart", postCart)
+router.post("/cart", isAuthenticated, postCart)
 
-router.post("/create-order", createOrder)
+router.post("/create-order", isAuthenticated, createOrder)
 
-router.get("/orders", getOrders)
+router.get("/orders", isAuthenticated, getOrders)
 
 module.exports = router

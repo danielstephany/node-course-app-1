@@ -1,15 +1,47 @@
 <%- include('../includes/head.ejs'); %>
-<div class="add-product">
+<div class="simple-section">
     <h1>Create Account</h1>
-    <div class="add-product__form-card">
-        <form action="/auth/create-account" method="post">
-            <div class="form-ctrl form-ctrl--fullwidth">
-                <Label for="name">Name</Label>
-                <input id="name" name="name" />
+    <div class="form-card">
+        <% if(errorMessages?.main){ %>
+            <div class="txt-error">
+                <%=errorMessages?.main%>
             </div>
-            <div class="form-ctrl form-ctrl--fullwidth">
+        <% } %>
+        <form action="/auth/create-account" method="post">
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.name ? "form-ctrl--error" : "" %>">
+                <Label for="name">Name</Label>
+                <input id="name" name="name" value="<%= cachedValues.name || "" %>"/>
+                <% if(errorMessages?.name){ %>
+                    <span class="form-ctrl__error"><%= errorMessages?.name %></span>
+                <% } %>
+            </div>
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.email ? "form-ctrl--error" : "" %>">
                 <Label for="email">Email</Label>
-                <input id="email" name="email" />
+                <input id="email" name="email"  value="<%= cachedValues.email || "" %>"/>
+                <% if(errorMessages?.email){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.email %>
+                    </span>
+                <% } %>
+            </div>
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.password ? "form-ctrl--error" : "" %>">
+                <Label for="password">Password</Label>
+                <input id="password" name="password" type="password"  value="<%= cachedValues.password || "" %>"/>
+                <% if(errorMessages?.password){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.password %>
+                    </span>
+                <% } %>
+            </div>
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.password2 ? "form-ctrl--error" : "" %>">
+                <Label for="password2">Re-enter Password</Label>
+                <input id="password2" name="password2" type="password2" value="<%= cachedValues.password2 || "" %>"/>
+                <% if(errorMessages?.password2){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.password2 %>
+                    </span>
+                <% } %>
             </div>
             <div class="form-ctrl form-ctrl--fullwidth">
                 <button type="submit">Submit</button>

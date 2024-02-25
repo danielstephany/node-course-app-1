@@ -1,10 +1,13 @@
 const {Product} = require("../Models/product")
-const User = require("../Models/user")
 
 const getShopProducts = async (req, res, next) => {
     try {
         const products = await Product.find()
-        res.render("shop/product-list", { prods: products, title: "Shop Products", path: "/products" })
+        res.render("shop/product-list", { 
+            prods: products, 
+            title: "Shop Products", 
+            path: "/products"
+        })
     } catch (e) {
         console.log(e)
     }
@@ -15,7 +18,11 @@ const getProduct = async (req, res, next) => {
         let productId = req.params.productId
         const product = await Product.findById(productId)
         console.log(product)
-        res.render("shop/product-details", { product, title: "Product Details", path: "/products" })
+        res.render("shop/product-details", { 
+            product, 
+            title: "Product Details", 
+            path: "/products"
+        })
     } catch(e){
         console.log(e)
     }
@@ -24,7 +31,11 @@ const getProduct = async (req, res, next) => {
 const getIndex = async (req, res, next) => {
     try {
         const products = await Product.find()
-        res.render("shop/index", { prods: products, title: "Shop", path: "/" })
+        res.render("shop/index", { 
+            prods: products, 
+            title: "Shop", 
+            path: "/"
+        })
     } catch(e) {
         console.log(e)
     }
@@ -34,7 +45,11 @@ const getCart = async (req, res, next) => {
     try {
         const cartItems = await req.user.getCart()
 
-        res.render("shop/cart", { title: "Cart", path: "/cart", cart: { products: cartItems } })
+        res.render("shop/cart", { 
+            title: "Cart", 
+            path: "/cart", 
+            cart: { products: cartItems }
+        })
     } catch (e) {
         console.log(e)
     }
@@ -68,7 +83,11 @@ const getOrders = async (req, res, next) => {
     try {
         const orders = await req.user.getOrders()
 
-        res.render("shop/orders", { title: "Orders", path: "/orders", orders })
+        res.render("shop/orders", { 
+            title: "Orders", 
+            path: "/orders", 
+            orders
+        })
 
     } catch(e){
         console.log(e)

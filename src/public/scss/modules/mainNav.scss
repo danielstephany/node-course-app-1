@@ -15,11 +15,17 @@
     display: inline-block;
 }
 
-.main-nav a {
+.main-nav a,
+.main-nav button {
+    border: none;
+    background-color: transparent;
     display: inline-block;
     padding: 8px 8px;
     color: #fff;
     text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .main-nav a.active {
