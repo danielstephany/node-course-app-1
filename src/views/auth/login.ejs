@@ -2,20 +2,30 @@
 <div class="simple-section">
     <h1>Login</h1>
     <div class="form-card">
-        <% if(errorMessage){ %>
+        <% if(errorMessages?.main){ %>
         <div class="txt-error">
-            <%=errorMessage%>
+            <%=errorMessages?.main%>
         </div>
         <% } %>
         <form action="/auth/login" method="post">
             <input type="hidden" name="_csrf" value="<%=csrfToken%>">
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.email ? "form-ctrl--error" : "" %></div>">
                 <Label for="email">Email</Label>
                 <input id="email" name="email" value="<%= cachedValues.email || "" %>"/>
+                <% if(errorMessages?.email){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.email %>
+                    </span>
+                <% } %>
             </div>
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.password ? "form-ctrl--error" : "" %></div>">
                 <Label for="password">Password</Label>
                 <input id="password" name="password" type="password" value="<%= cachedValues.password || "" %>"/>
+                <% if(errorMessages?.password){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.password %>
+                    </span>
+                <% } %>
             </div>
             <div class="txt-r">
                 <a href="/auth/reset-password">Forgot Password</a>

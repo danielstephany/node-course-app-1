@@ -18,12 +18,13 @@ const getSignUp = (req, res, next) => {
 }
 
 const getLogin = (req, res, next) => {
-    let errorMessage = req.flash('error')
-    if (Array.isArray(errorMessage)) errorMessage = errorMessage[0]
+    let error = req.flash('error')
+    let errorMessages = {}
+    if (Array.isArray(error)) errorMessages = { main: error[0] }
     res.render("auth/login", { 
         title: "Login", 
         path: "/auth/login",
-        errorMessage,
+        errorMessages: errorMessages,
         cachedValues: {}
     })
 }
@@ -72,13 +73,18 @@ const createAccount = async (req, res, next) => {
 }
 
 const postLogin = async (req, res, next) => {
-    let errorMessage = validationResult(req)
+    let errors = validationResult(req)
 
-    if (!errorMessage.isEmpty()){
+    if (!errors.isEmpty()){
+        const errorMessages = {}
+        errors.array()?.forEach(item => {
+            errorMessages[item.path] = item.msg
+        });
+
         return res.status(422).render("auth/login", {
             title: "Login",
             path: "/auth/login",
-            errorMessage: errorMessage.array()[0]?.msg,
+            errorMessages: errorMessages || {},
             cachedValues: {email, password} = req.body
         })
     }

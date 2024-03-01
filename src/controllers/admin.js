@@ -1,4 +1,3 @@
-const { findById } = require("../Models/order")
 const {Product} = require("../Models/product")
 
 const getAddProduct = (req, res, next) => {

@@ -26,8 +26,8 @@ router.get("/login", getLogin)
 router.post(
     "/login", 
     [
-        body("email", "invalid email").isEmail(),
-        body("password", "password is required").not().isEmpty()
+        body("email", "invalid email").trim().isEmail().normalizeEmail(),
+        body("password", "password is required").trim().not().isEmpty().normalizeEmail()
     ],
     postLogin
 )
@@ -35,8 +35,8 @@ router.post(
 router.post(
     "/create-account", 
     [
-        body("name", "Name is required").not().isEmpty(),
-        check("email").isEmail().withMessage("invalid email").custom((email, {req}) => {
+        body("name", "Name is required").trim().not().isEmpty(),
+        check("email").isEmail().normalizeEmail().trim().withMessage("invalid email").custom((email, {req}) => {
             //async validation
             return User.findOne({ email })
             .then(userDoc => {
@@ -48,8 +48,8 @@ router.post(
         body(
             "password",
             "password should be at least 5 characters."
-        ).isLength(5),
-        body("password2").custom((value, {req}) => {
+        ).trim().isLength(5),
+        body("password2").trim().custom((value, {req}) => {
             if(value !== req.body.password){
                 throw new Error("Passwords do not match")
             }

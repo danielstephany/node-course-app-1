@@ -1,5 +1,9 @@
 const express = require("express")
 const isAuthenticated = require("../middleware/isAuthenticated")
+const {
+    check,
+    body
+} = require("express-validator")
 
 const {
     getAddProduct,
@@ -12,7 +16,18 @@ const {
 
 const router = express.Router()
 
-router.get("/add-product", isAuthenticated, getAddProduct)
+router.get(
+    "/add-product", 
+    isAuthenticated, 
+    [
+        body("title").trim().notEmpty(),
+        body("price").trim().notEmpty(),
+        body("description").trim().notEmpty(),
+        body("imgUrl").trim().notEmpty(),
+        body("userId").trim().notEmpty()
+    ], 
+    getAddProduct
+)
 
 router.post("/edit-product", isAuthenticated, editProduct)
 
