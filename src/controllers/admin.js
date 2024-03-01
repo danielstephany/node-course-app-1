@@ -1,20 +1,39 @@
 const {Product} = require("../Models/product")
+const { validationResult } = require("express-validator")
 
 const getAddProduct = (req, res, next) => {
     res.render("admin/add-product", { 
         title: "Add product", 
-        path: "/admin/add-product"
+        path: "/admin/add-product",
+        errorMessages: {},
     })
 }
 
 const postAddProduct = async (req, res, next) => {
+    let errors = validationResult(req)
+    const {title, price, description, imgUrl, userId} = req.body
+
+    if (!errors.isEmpty()) {
+        const errorMessages = {}
+        errors.array()?.forEach(item => {
+            errorMessages[item.path] = item.msg
+        });
+
+        return res.status(422).render("admin/add-product", {
+            title: "Add product",
+            path: "/admin/add-product",
+            errorMessages: errorMessages || {},
+            cachedValues: { title, price, description, imgUrl, userId }
+        })
+    }
+
     try {
         const product = new Product({
-            title: req.body.title,
-            price: req.body.price,
-            description: req.body.description,
-            imgUrl: req.body.imgUrl,
-            userId: req.user._id
+            title,
+            price,
+            description,
+            imgUrl,
+            userId
         })
 
         await product.save()
@@ -26,8 +45,9 @@ const postAddProduct = async (req, res, next) => {
 }
 
 const getEditProduct = async (req, res, next) => {
-    let errorMessage = req.flash('error')
-    if (Array.isArray(errorMessage)) errorMessage = errorMessage[0]
+    let errorMessages = {}
+    let error = req.flash('error')
+    if (Array.isArray(error)) errorMessages = {main: error[0]}
 
     try {
         const productId = req.params.productId
@@ -37,7 +57,8 @@ const getEditProduct = async (req, res, next) => {
             title: "Edit Product", 
             path: "/admin/edit-product", 
             product,
-            errorMessage
+            errorMessages,
+            cachedValues: {}
         })
     } catch (e){
         console.log(e)
@@ -61,14 +82,33 @@ const deleteProduct = async (req, res, next) => {
 }
 
 const editProduct = async (req, res, next) => {
-    try {
-        const product = await Product.findById(req.body.id)
-        if(product?.userId === req.user._id){
+    try {        
+        let errorMessages = {}
+        let errors = validationResult(req)
+        const { title, price, description, imgUrl, _id } = req.body
+        const product = await Product.findById(req.body._id)
+        
+        if (!errors.isEmpty()) {
+            errors.array()?.forEach(item => {
+                errorMessages[item.path] = item.msg
+            });
+
+            return res.status(422).render("admin/edit-product", {
+                title: "edit product",
+                path: "/admin/edit-product",
+                product,
+                errorMessages: errorMessages || {},
+                cachedValues: { title, price, description, imgUrl, _id }
+            })
+        }
+        
+        
+        if(String(product?.userId) === String(req.user._id)){
             await Product.updateOne({_id: req.body._id}, {
-                title: req.body.title,
-                imgUrl: req.body.imgUrl,
-                description: req.body.description,
-                price: req.body.price
+                title,
+                imgUrl,
+                description,
+                price
             });
             res.redirect("/admin/products")
         } else {

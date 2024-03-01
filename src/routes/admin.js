@@ -16,20 +16,20 @@ const {
 
 const router = express.Router()
 
-router.get(
-    "/add-product", 
+router.get("/add-product", isAuthenticated,  getAddProduct)
+
+router.post(
+    "/edit-product", 
     isAuthenticated, 
     [
-        body("title").trim().notEmpty(),
-        body("price").trim().notEmpty(),
-        body("description").trim().notEmpty(),
-        body("imgUrl").trim().notEmpty(),
-        body("userId").trim().notEmpty()
-    ], 
-    getAddProduct
+        body("title", "required").trim().notEmpty(),
+        body("price", "required").trim().notEmpty(),
+        body("description", "required").trim().notEmpty(),
+        body("imgUrl", "required").trim().notEmpty(),
+        body("_id", "required").trim().notEmpty()
+    ],
+    editProduct
 )
-
-router.post("/edit-product", isAuthenticated, editProduct)
 
 router.post("/delete-product", isAuthenticated, deleteProduct)
 
@@ -37,6 +37,17 @@ router.get("/edit-product/:productId", isAuthenticated, getEditProduct)
 
 router.get("/products", isAuthenticated, getProducts)
 
-router.post("/product", isAuthenticated, postAddProduct)
+router.post(
+    "/product", 
+    isAuthenticated, 
+    [
+        body("title", "required").trim().notEmpty(),
+        body("price", "required").trim().notEmpty(),
+        body("description", "required").trim().notEmpty(),
+        body("imgUrl", "required").trim().notEmpty(),
+        body("userId", "required").trim().notEmpty()
+    ],
+    postAddProduct
+)
 
 module.exports = router

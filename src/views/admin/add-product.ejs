@@ -4,21 +4,41 @@
     <div class="form-card">
         <form action="/admin/product" method="post">
             <input type="hidden" name="_csrf" value="<%=csrfToken%>">
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.title ? "form-ctrl--error" : "" %>">
                 <Label for="title">Title</Label>
-                <input id="title" name="title" />
+                <input id="title" name="title" value="<%= cachedValues?.title || "" %>"/>
+                <% if(errorMessages?.title){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.title %>
+                    </span>
+                <% } %>
             </div>
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.imgUrl ? "form-ctrl--error" : "" %>">
                 <Label for="imgUrl">Image Url</Label>
-                <input id="imgUrl" name="imgUrl" />
+                <input id="imgUrl" name="imgUrl" value="<%= cachedValues?.imgUrl || "" %>"/>
+                <% if(errorMessages?.imgUrl){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.imgUrl %>
+                    </span>
+                <% } %>
             </div>
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.price ? "form-ctrl--error" : "" %>">
                 <Label for="price">Price</Label>
-                <input type="number" step="0.01" id="price" name="price" />
+                <input type="number" step="0.01" id="price" name="price" value="<%= cachedValues?.price || "" %>"/>
+                <% if(errorMessages?.price){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.price %>
+                    </span>
+                <% } %>
             </div>
-            <div class="form-ctrl form-ctrl--fullwidth">
+            <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.description ? "form-ctrl--error" : "" %>">
                 <Label for="description">Description</Label>
-                <textarea id="description" name="description" rows="4"></textarea>
+                <textarea id="description" name="description" rows="4"><%= cachedValues?.description || "" %></textarea>
+                <% if(errorMessages?.description){ %>
+                    <span class="form-ctrl__error">
+                        <%= errorMessages?.description %>
+                    </span>
+                <% } %>
             </div>
             <div class="form-ctrl form-ctrl--fullwidth">
                 <button type="submit">Submit</button>

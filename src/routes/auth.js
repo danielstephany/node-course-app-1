@@ -27,7 +27,7 @@ router.post(
     "/login", 
     [
         body("email", "invalid email").trim().isEmail().normalizeEmail(),
-        body("password", "password is required").trim().not().isEmpty().normalizeEmail()
+        body("password", "password is required").trim().not().isEmpty()
     ],
     postLogin
 )

@@ -508,6 +508,7 @@ body {
   margin: 0 0 4px 0;
 }
 .form-ctrl textarea,
+.form-ctrl select,
 .form-ctrl input {
   width: 100%;
   padding: 4px 8px;
@@ -519,7 +520,9 @@ body {
   font-size: 12px;
   color: red;
 }
-.form-ctrl--error input {
+.form-ctrl--error select,
+.form-ctrl--error input,
+.form-ctrl--error textarea {
   border-color: red;
 }
 
