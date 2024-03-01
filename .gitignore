@@ -9,4 +9,4 @@ tsconfig.lsif.json
 *.db
 node_modules/
 creds.md
-.env
+*.env
