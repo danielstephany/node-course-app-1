@@ -6,12 +6,13 @@ const getAddProduct = (req, res, next) => {
         title: "Add product", 
         path: "/admin/add-product",
         errorMessages: {},
+        cachedValues: {}
     })
 }
 
 const postAddProduct = async (req, res, next) => {
     let errors = validationResult(req)
-    const {title, price, description, imgUrl, userId} = req.body
+    const {title, price, description, imgUrl} = req.body
 
     if (!errors.isEmpty()) {
         const errorMessages = {}
@@ -23,7 +24,7 @@ const postAddProduct = async (req, res, next) => {
             title: "Add product",
             path: "/admin/add-product",
             errorMessages: errorMessages || {},
-            cachedValues: { title, price, description, imgUrl, userId }
+            cachedValues: { title, price, description, imgUrl }
         })
     }
 
@@ -33,14 +34,14 @@ const postAddProduct = async (req, res, next) => {
             price,
             description,
             imgUrl,
-            userId
+            userId: req.user._id
         })
 
         await product.save()
     
         res.redirect("/")
     } catch(e){
-        console.log(e)
+        next(e)
     }
 }
 
@@ -61,7 +62,7 @@ const getEditProduct = async (req, res, next) => {
             cachedValues: {}
         })
     } catch (e){
-        console.log(e)
+        next(e)
     }
 }
 
@@ -77,7 +78,7 @@ const deleteProduct = async (req, res, next) => {
             res.redirect(`/admin/products`)
         }
     } catch(e){
-        console.log(e)
+        next(e)
     }
 }
 
@@ -116,7 +117,7 @@ const editProduct = async (req, res, next) => {
             res.redirect(`/admin/edit-product/${req.body._id}`)
         }
     } catch(e){
-        console.log(e)
+        next(e)
     }
 }
 
@@ -134,7 +135,7 @@ const getProducts = async (req, res, next) => {
             errorMessage
         })
     } catch(e){
-        console.log(e)
+        next(e)
     }
 }
 

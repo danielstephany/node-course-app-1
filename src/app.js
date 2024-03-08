@@ -4,7 +4,10 @@ const bodyParser = require("body-parser")
 const path = require("path")
 const rootDir = require("./utils/path")
 const session = require('express-session')
-const {get404} = require("./controllers/errors")
+const {
+    get404,
+    get500
+} = require("./controllers/errors")
 const mongoose = require("mongoose")
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csurf = require("csurf")
@@ -49,8 +52,7 @@ app.use((req, res, next) => {
             }
             next()
         }).catch(e => {
-            console.log(e)
-            next()
+            next(e)
         })
     } else {
         next()
@@ -63,12 +65,19 @@ app.use((req, res, next) => {
     next()
 })
 
+
+
 app.use("/admin", adminRoutes)
 app.use("/auth", authRoutes)
 
 app.use(shopRoutes)
 
+app.get("/500", get500)
 app.use(get404)
+
+app.use((error, req, res, next) => {
+    res.redirect("/500")
+})
 
 mongoose.connect(mongodbUri)
 .then(() => {
