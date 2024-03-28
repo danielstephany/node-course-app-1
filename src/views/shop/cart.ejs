@@ -2,9 +2,9 @@
 <div class="cart">
     <h1>Cart</h1>
     <div class="cart-card">
-        <% if (cart?.products?.length) { %>
+        <% if (cart?.items?.length) { %>
             <ul class="cart-card__list">
-                <% cart.products.forEach(product => {%>
+                <% cart.items.forEach(product => {%>
                     <li class="cart-item">
                         <span class="cart-item__title"><%= product.productId.title %>: $<%= product.productId.price %></span>
                         <span>QTY: <%= product.quantity %></span>
@@ -16,7 +16,7 @@
                     </li>
                 <%})%>
             </ul>
-            <h3 class="cart-card__total">total: <%= cart.totalPrice %></h3>
+            <h3 class="cart-card__total">Total: $<%= cart.total %></h3>
             <div class="cart-card__action">
                 <form action="/create-order" method="POST">
                     <input type="hidden" name="_csrf" value="<%=csrfToken%>">

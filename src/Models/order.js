@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const {productSchema} = require("./product")
+const { Decimal128 } = require("mongodb")
 
 const orderSchema = new mongoose.Schema({
     items: [{
@@ -9,8 +10,11 @@ const orderSchema = new mongoose.Schema({
     user: {
         userId: { type: mongoose.ObjectId, ref: "User" },
         name: { type: String, }
+    },
+    total: {
+        type: Number,
+        required: true
     }
-
 })
 
 const Order = mongoose.model("Order", orderSchema)

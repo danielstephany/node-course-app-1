@@ -375,6 +375,10 @@ body {
   text-align: right;
 }
 
+.mb-4 {
+  margin-bottom: 16px;
+}
+
 .main-btn {
   display: inline-flex;
   background-color: #fff;
@@ -395,6 +399,20 @@ body {
 
 .form-btn {
   display: inline-block;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  width: auto;
+  max-width: 100%;
+}
+.card--fullwidth {
+  width: 100%;
+}
+.card__content {
+  padding: 24px;
 }
 
 .main-nav {

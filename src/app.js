@@ -1,6 +1,7 @@
 const dotenv = require('dotenv')
 const express = require("express")
 const bodyParser = require("body-parser")
+const multer = require('multer')
 const path = require("path")
 const rootDir = require("./utils/path")
 const session = require('express-session')
@@ -13,6 +14,23 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csurf = require("csurf")
 const flash = require("connect-flash")
 const User = require("./Models/user")
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads")
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname)
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg"){
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
 
 dotenv.config()
 
@@ -33,7 +51,9 @@ app.set('view engine', 'ejs');
 app.set("views", path.join(rootDir,"views"))
 
 app.use(express.static(path.join(rootDir, "public")))
+app.use("/uploads", express.static(path.join(rootDir, "../uploads")))
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(multer({ storage, fileFilter }).single("image"))
 app.use(session({
     secret: "temp secret", 
     resave: false, 
@@ -76,6 +96,7 @@ app.get("/500", get500)
 app.use(get404)
 
 app.use((error, req, res, next) => {
+    console.log(error)
     res.redirect("/500")
 })
 

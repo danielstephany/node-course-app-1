@@ -25,7 +25,6 @@ router.post(
         body("title", "required").trim().notEmpty(),
         body("price", "required").trim().notEmpty(),
         body("description", "required").trim().notEmpty(),
-        body("imgUrl", "required").trim().notEmpty(),
         body("_id", "required").trim().notEmpty()
     ],
     editProduct
@@ -44,7 +43,6 @@ router.post(
         body("title", "required").trim().notEmpty(),
         body("price", "required").trim().notEmpty(),
         body("description", "required").trim().notEmpty(),
-        body("imgUrl", "required").trim().notEmpty()
     ],
     postAddProduct
 )

@@ -1,12 +1,14 @@
 const mongoose = require("mongoose")
 const Order = require("./order")
+const { Product } = require("./product")
 
 
 const CartSchema = new mongoose.Schema({
     items: {
         type: [{productId: {type: String, ref: "Product", required: true}, quantity: {type: Number, required: true}}],
         required: true
-    }
+    },
+    total: Number
 })
 
 const UserSchema = new mongoose.Schema({
@@ -38,10 +40,14 @@ UserSchema.methods.addToCart = async function (product) {
         })
 
         if (cartProduct >= 0) {
-            updatedCart = { items: [...this.cart.items] }
+            updatedCart = { items: [...this.cart.items], total: parseFloat(this.cart.total.toString()) }
             updatedCart.items[cartProduct].quantity++
+            updatedCart.total = updatedCart.total + product.price
         } else {
-            updatedCart = { items: [{ productId: product._id, quantity: 1 }, ...this.cart.items] }
+            updatedCart = { 
+                items: [{ productId: product._id, quantity: 1 }, ...this.cart.items],
+                total: parseFloat(this?.cart?.total?.toString()) + product.price
+            }
         }
 
         this.cart = updatedCart
@@ -56,7 +62,7 @@ UserSchema.methods.addToCart = async function (product) {
 UserSchema.methods.getCart = async function(){
     try {
         const userWithPopulatedCart = await this.populate("cart.items.productId")
-        return userWithPopulatedCart.cart.items
+        return userWithPopulatedCart.cart
     } catch (e) {
         console.log(e)
     }
@@ -65,9 +71,16 @@ UserSchema.methods.getCart = async function(){
 
 UserSchema.methods.deleteCartItem = async function(productId) {
     try {
+        const deletedItem = await Product.findById(productId)
+        let quantity = 0
         const updatedCart = {
             ...this.cart,
-            items: this?.cart?.items?.filter(item => String(item.productId) !== String(productId))
+            items: this?.cart?.items?.filter(item => {
+                const isProduct = String(item.productId) === String(productId)
+                if(isProduct) quantity = item.quantity
+                return !isProduct
+            }),
+            total: (this?.cart?.total - (deletedItem?.price * quantity) >= 0) ? this?.cart?.total - (deletedItem?.price * quantity) : 0.00
         }
 
         this.cart = updatedCart
@@ -83,12 +96,14 @@ UserSchema.methods.addOrder = async function(){
     try {
         const userWithPopulatedCart = await this.populate("cart.items.productId")
         const items = userWithPopulatedCart.cart.items.map(item => ({product: {...item.productId._doc}, quantity: item.quantity}))
+        const total = userWithPopulatedCart?.cart?.total.toString() 
         const order = new Order({
             user: {
                 userId: this._id,
                 name: this.name
             },
-            items
+            items,
+            total
         })
 
         this.cart = { items: [] }
@@ -111,44 +126,5 @@ UserSchema.methods.getOrders = async function(){
 }
 
 const User = mongoose.model("User", UserSchema)
-
-
-
-    // async addOrder(){
-    //     const db = getDb()
-    //     try {
-    //         const products = await this.getCart()
-    //         const order = await db.collection("orders").insertOne({ 
-    //             user: { 
-    //                 _id: this._id,
-    //                 name: this.name
-    //             }, 
-    //             items: products 
-    //         })
-
-    //         this.cart = {items: []}
-    //         await db.collection("users").updateOne(
-    //             {_id: this._id},
-    //             {$set: {cart: this.cart}}
-    //         )
-    //         return order
-    //     } catch(e){
-    //         console.log(e)
-    //     }
-    //     return null
-    // }
-
-    // async getOrders(){
-    //     const db = getDb()
-    //     try {            
-    //         const orders = await db.collection("orders").find({"user._id": this._id}).toArray()
-    //         console.log(orders)
-    //         return orders
-    //     } catch(e){
-    //         console.log(e)
-    //     }
-    //     return null
-    // }
-// }
 
 module.exports = User

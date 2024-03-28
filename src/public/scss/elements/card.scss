@@ -1,0 +1,13 @@
+.card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+        width: auto;
+        max-width: 100%;
+        &--fullwidth {
+            width: 100%;
+        }
+        &__content {
+            padding: 24px;
+        }
+}

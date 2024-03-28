@@ -1,5 +1,6 @@
 const {Product} = require("../Models/product")
 const { validationResult } = require("express-validator")
+const { deleteFile } = require("../utils/file")
 
 const getAddProduct = (req, res, next) => {
     res.render("admin/add-product", { 
@@ -12,7 +13,16 @@ const getAddProduct = (req, res, next) => {
 
 const postAddProduct = async (req, res, next) => {
     let errors = validationResult(req)
-    const {title, price, description, imgUrl} = req.body
+    const {title, price, description} = req.body
+    const image = req.file
+    if (!image){
+        return res.status(422).render("admin/add-product", {
+            title: "Add product",
+            path: "/admin/add-product",
+            errorMessages: { main: "Attached file is not an image"},
+            cachedValues: { title, price, description }
+        })
+    }
 
     if (!errors.isEmpty()) {
         const errorMessages = {}
@@ -24,7 +34,7 @@ const postAddProduct = async (req, res, next) => {
             title: "Add product",
             path: "/admin/add-product",
             errorMessages: errorMessages || {},
-            cachedValues: { title, price, description, imgUrl }
+            cachedValues: { title, price, description }
         })
     }
 
@@ -33,7 +43,7 @@ const postAddProduct = async (req, res, next) => {
             title,
             price,
             description,
-            imgUrl,
+            imageUrl: image.path,
             userId: req.user._id
         })
 
@@ -71,6 +81,9 @@ const deleteProduct = async (req, res, next) => {
     try {
         const product = await Product.findById(productId)
         if (product?.userId && String(product?.userId) === String(req.user._id)) {
+            if (product?.imageUrl) {
+                deleteFile(product?.imageUrl)
+            }
             await Product.deleteOne({_id: productId, userId: req.user._id})
             res.redirect("/admin/products")
         } else {
@@ -86,7 +99,9 @@ const editProduct = async (req, res, next) => {
     try {        
         let errorMessages = {}
         let errors = validationResult(req)
-        const { title, price, description, imgUrl, _id } = req.body
+        const { title, price, description, _id } = req.body
+        const image = req.file
+
         const product = await Product.findById(req.body._id)
         
         if (!errors.isEmpty()) {
@@ -99,15 +114,18 @@ const editProduct = async (req, res, next) => {
                 path: "/admin/edit-product",
                 product,
                 errorMessages: errorMessages || {},
-                cachedValues: { title, price, description, imgUrl, _id }
+                cachedValues: { title, price, description, _id }
             })
         }
-        
+
+        if (image?.path){
+            deleteFile(product?.imageUrl)
+        }
         
         if(String(product?.userId) === String(req.user._id)){
             await Product.updateOne({_id: req.body._id}, {
                 title,
-                imgUrl,
+                imageUrl: image?.path || product?.imageUrl,
                 description,
                 price
             });

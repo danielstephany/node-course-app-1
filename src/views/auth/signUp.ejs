@@ -36,7 +36,7 @@
             </div>
             <div class="form-ctrl form-ctrl--fullwidth <%=errorMessages?.password2 ? "form-ctrl--error" : "" %>">
                 <Label for="password2">Re-enter Password</Label>
-                <input id="password2" name="password2" type="password2" value="<%= cachedValues.password2 || "" %>"/>
+                <input id="password2" name="password2" type="password" value="<%= cachedValues.password2 || "" %>"/>
                 <% if(errorMessages?.password2){ %>
                     <span class="form-ctrl__error">
                         <%= errorMessages?.password2 %>

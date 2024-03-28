@@ -4,12 +4,16 @@
         <h3>You have no orders.</h3>
     <%} else {%>
         <%orders.forEach((order) => {%>
-            <h3>Order: <%=order._id%></h3>
-            <ul>
-                <%order.items.forEach(item => {%>
-                    <li><%=item?.product?.title%> <br>QTY: <%=item.quantity%></li>
-                <%})%>
-            </ul>
+            <div class="card mb-4">
+                <div class="card__content">
+                    <h3>Order: <%=order._id%> - <a href="/orders/<%=order._id%>">Invoice</a></h3>
+                    <ul>
+                        <%order.items.forEach(item => {%>
+                            <li><%=item?.product?.title%> <br>QTY: <%=item.quantity%></li>
+                        <%})%>
+                    </ul>
+                </div>
+            </div>
         <%})%>
     <%}%>
 <%- include('../includes/end.ejs'); %>

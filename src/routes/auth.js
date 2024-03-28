@@ -26,7 +26,7 @@ router.get("/login", getLogin)
 router.post(
     "/login", 
     [
-        body("email", "invalid email").trim().isEmail().normalizeEmail(),
+        body("email", "invalid email").trim().isEmail(),
         body("password", "password is required").trim().not().isEmpty()
     ],
     postLogin
@@ -36,7 +36,7 @@ router.post(
     "/create-account", 
     [
         body("name", "Name is required").trim().not().isEmpty(),
-        check("email").isEmail().normalizeEmail().trim().withMessage("invalid email").custom((email, {req}) => {
+        check("email").trim().isEmail().withMessage("invalid email").custom((email, {req}) => {
             //async validation
             return User.findOne({ email })
             .then(userDoc => {

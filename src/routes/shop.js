@@ -9,7 +9,8 @@ const {
     getOrders,
     getProduct,
     cartDeleteItem,
-    createOrder
+    createOrder,
+    getInvoice
  } = require("../controllers/shop")
 
 const router = express.Router()
@@ -29,5 +30,7 @@ router.post("/cart", isAuthenticated, postCart)
 router.post("/create-order", isAuthenticated, createOrder)
 
 router.get("/orders", isAuthenticated, getOrders)
+
+router.get("/orders/:orderId", isAuthenticated, getInvoice)
 
 module.exports = router

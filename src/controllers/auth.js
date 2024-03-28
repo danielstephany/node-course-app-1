@@ -51,7 +51,7 @@ const createAccount = async (req, res, next) => {
                 name: req.body.name, 
                 email: req.body.email,
                 password,
-                cart: {items: []}
+                cart: {items: [], total: 0.00}
             })
             await user.save()
             req.session.user = user
